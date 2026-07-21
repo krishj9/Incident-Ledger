@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "mybrightday-dev"
+  },
+  "targets": {
+    "mybrightday-dev": {
+      "hosting": {
+        "director": [
+          "incident-ledger-director"
+        ],
+        "guardian": [
+          "incident-ledger-guardian"
+        ]
+      }
+    }
+  }
+}

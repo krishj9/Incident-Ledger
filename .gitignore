@@ -102,3 +102,4 @@ Thumbs.db
 # ─── Build outputs ────────────────────────────────────────────────────────────
 *.log
 openapi.json
+.firebase/
