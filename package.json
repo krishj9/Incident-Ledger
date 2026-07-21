@@ -1,0 +1,8 @@
+{
+  "name": "incident-ledger-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
+}

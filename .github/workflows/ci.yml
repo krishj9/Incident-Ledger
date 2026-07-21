@@ -1,0 +1,106 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint & Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Python Linting
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14' # Use 3.14 as specified in other places, or adjust to 3.12 if needed
+      
+      - name: Install Ruff
+        run: pip install ruff
+      
+      - name: Ruff Check
+        working-directory: services/api
+        run: ruff check .
+      
+      - name: Ruff Format Check
+        working-directory: services/api
+        run: ruff format --check .
+
+      # Node.js Setup
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Root Dependencies
+        run: npm ci || npm install
+
+      # Mobile Linting
+      - name: Lint Mobile
+        working-directory: apps/mobile
+        run: |
+          npm ci || npm install
+          npx eslint .
+          npx prettier --check .
+
+      # Director Linting
+      - name: Lint Director
+        working-directory: apps/director
+        run: |
+          npm ci || npm install
+          npx eslint .
+          npx prettier --check .
+
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Install Dependencies
+        working-directory: services/api
+        run: uv pip install -r requirements.txt --system || uv sync
+
+      - name: Run Pytest with Coverage
+        working-directory: services/api
+        run: uv run pytest tests/ -v --cov=app --cov-fail-under=85
+
+  build-checks:
+    name: Build Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install Root Dependencies
+        run: npm ci || npm install
+
+      - name: Build Mobile
+        working-directory: apps/mobile
+        run: |
+          npm ci || npm install
+          npx expo export
+
+      - name: Build Director
+        working-directory: apps/director
+        run: |
+          npm ci || npm install
+          npm run build
