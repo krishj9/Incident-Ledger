@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Incident Ledger — Guardian",
+    "slug": "incident-ledger-guardian",
+    "version": "0.1.0",
+    "scheme": "incident-ledger-guardian",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

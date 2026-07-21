@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Incident Ledger — Director Portal",
+    "slug": "incident-ledger-director",
+    "version": "0.1.0",
+    "scheme": "incident-ledger-director",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
